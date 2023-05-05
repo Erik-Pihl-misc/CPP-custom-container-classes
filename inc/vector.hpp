@@ -89,6 +89,19 @@ class Vector {
     }
 
     /********************************************************************************
+     * @brief Returns reference to the element at specified index in referenced 
+     *        vector. An exception occurs if the index falls outside the vector.
+     *
+     * @param index
+     *        Index to searched element.
+     * @return
+     *        A reference to the element at specified index.
+     ********************************************************************************/
+    const T& operator[] (const size_t index) const {
+        return data_[index];
+    }
+
+    /********************************************************************************
      * @brief Adds referenced values to the back of assigned vector.
      *
      * @param values
