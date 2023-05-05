@@ -84,7 +84,7 @@ class Vector {
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    T& operator[] (const size_t index) {
+    T& operator[] (const size_t index) noexcept {
         return data_[index];
     }
 
@@ -97,8 +97,39 @@ class Vector {
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    const T& operator[] (const size_t index) const {
+    const T& operator[] (const size_t index) const noexcept {
         return data_[index];
+    }
+
+    /********************************************************************************
+     * @brief Copies the content of referenced vector to assigned vector. 
+     *        Previous values are cleared before copying.
+     *
+     * @param values
+     *        Referenced values to copy.
+     * @return
+     *        A reference to assigned vector.     
+     ********************************************************************************/
+    template <size_t size>
+    Vector& operator= (const T (&values)[size]) noexcept {
+        Clear();
+        Copy(values);
+        return *this;
+    }
+
+    /********************************************************************************
+     * @brief Copies the content of referenced vector to assigned vector. 
+     *        Previous values are cleared before copying.
+     *
+     * @param source
+     *        Reference to vector containing the the values to add.
+     * @return
+     *        A reference to assigned vector.     
+     ********************************************************************************/
+    Vector& operator= (const Vector& source) noexcept {
+        Clear();
+        Copy(source);
+        return *this;
     }
 
     /********************************************************************************
@@ -125,21 +156,6 @@ class Vector {
      ********************************************************************************/
     Vector& operator += (const Vector& source) noexcept {
         AddValues(source);
-        return *this;
-    }
-
-    /********************************************************************************
-     * @brief Copies the content of referenced vector to assigned vector. 
-     *        Previous values are cleared before copying.
-     *
-     * @param source
-     *        Reference to vector containing the the values to add.
-     * @return
-     *        A reference to assigned vector.     
-     ********************************************************************************/
-    Vector& operator= (const Vector& source) noexcept {
-        Clear();
-        *this = source;
         return *this;
     }
 
@@ -304,6 +320,23 @@ class Vector {
     }
 
     /********************************************************************************
+     * @brief Assigns referenced values without changing the vector size. An offset 
+     *        can be specified to assign the values further back in referenced vector. 
+     *        The offset should be set to the index of the first assigned value.
+     *
+     * @param values
+     *        Referenced values to assign.
+     * @param offset
+     *        Offset to assign values from a specified starting index.
+     ********************************************************************************/
+    template <size_t size>
+    void Assign(const T (&values)[size], const size_t offset = 0) noexcept {
+        for (size_t i{}; i < size && offset + i < size_; ++i) {
+            data_[offset + i] = values[i];
+        }
+    }
+
+    /********************************************************************************
      * @brief Assigns values from referenced source vector without changing the
      *        vector size. An offset can be specified to assign the values further
      *        back in referenced vector. The offset should be set to the index of
@@ -321,19 +354,21 @@ class Vector {
     }
 
     /********************************************************************************
-     * @brief Assigns referenced values without changing the vector size. An offset 
-     *        can be specified to assign the values further back in referenced vector. 
-     *        The offset should be set to the index of the first assigned value.
+     * @brief Adds referenced values to the back of the vector.
      *
      * @param values
-     *        Reference values to assign.
-     * @param offset
-     *        Offset to assign values from a specified starting index.
+     *        Reference to values to copy and add to the back of the vector.
+     * @return
+     *        True if the values were added, else false.
      ********************************************************************************/
     template <size_t size>
-    void Assign(const T (&values)[size], const size_t offset = 0) noexcept {
-        for (size_t i{}; i < size && offset + i < size_; ++i) {
-            data_[offset + i] = values[i];
+    bool AddValues(const T (&values)[size]) noexcept {
+        const auto offset{size_};
+        if (Resize(size_ + size)) {
+            Assign(values, offset);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -349,25 +384,6 @@ class Vector {
         const auto offset{size_};
         if (Resize(size_ + source.size_)) {
             Assign(source, offset);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /********************************************************************************
-     * @brief Adds referenced values to the back of the vector.
-     *
-     * @param values
-     *        Reference to values to copy and add to the back of the vector.
-     * @return
-     *        True if the values were added, else false.
-     ********************************************************************************/
-    template <size_t size>
-    bool AddValues(const T (&values)[size]) noexcept {
-        const auto offset{size_};
-        if (Resize(size_ + size)) {
-            Assign(values, offset);
             return true;
         } else {
             return false;
