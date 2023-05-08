@@ -85,7 +85,7 @@ class List {
      * @return
      *        A reference to the element at specified position.
      ********************************************************************************/
-    const T& operator[](ConstIterator& iterator) const noexcept {
+    const T& operator[] (ConstIterator& iterator) const noexcept {
         return *iterator;
     }
 
@@ -344,6 +344,7 @@ class List {
      ********************************************************************************/
     class Iterator {
       public:
+      
         /********************************************************************************
          * @brief Default constructor, creates empty iterator.
          ********************************************************************************/
@@ -391,7 +392,7 @@ class List {
          * @param num_increments
          *        The number of times the iterator will be incremented.
          ********************************************************************************/
-        void operator+=(const size_t num_increments) noexcept {
+        void operator+= (const size_t num_increments) noexcept {
             for (size_t i{}; i < num_increments; ++i) {
                 node_ = node_->next;
             }
