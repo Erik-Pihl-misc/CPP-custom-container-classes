@@ -670,9 +670,9 @@ class List {
         return true;
     }
 
-   /********************************************************************************
+    /********************************************************************************
      * @brief Copies the content of referenced source. All previous values are
-     *        reither emoved or overwritten.
+     *        either emoved or overwritten.
      *
      * @param source
      *        Reference to list whose content is copied.
