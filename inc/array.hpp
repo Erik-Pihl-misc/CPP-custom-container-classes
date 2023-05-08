@@ -57,7 +57,7 @@ class Array {
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    T& operator[] (const size_t index) noexcept {
+    T& operator[](const size_t index) noexcept {
         return data_[index];
     }
 
@@ -70,7 +70,7 @@ class Array {
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    const T& operator[] (const size_t index) const noexcept {
+    const T& operator[](const size_t index) const noexcept {
         return data_[index];
     }
 
@@ -83,7 +83,7 @@ class Array {
      *        A reference to assigned array.     
      ********************************************************************************/
     template <size_t num_values>
-    Array& operator= (const T (&values)[num_values]) noexcept {
+    Array& operator=(const T (&values)[num_values]) noexcept {
         Copy(values);
         return *this;
     }
@@ -97,7 +97,7 @@ class Array {
      *        A reference to assigned array.     
      ********************************************************************************/
     template <size_t num_values>
-    Array& operator= (const Array<T, num_values>& source) noexcept {
+    Array& operator=(const Array<T, num_values>& source) noexcept {
         Copy(source);
         return *this;
     }
@@ -111,7 +111,7 @@ class Array {
      *        A reference to assigned array.     
      ********************************************************************************/
     template <size_t num_values>
-    Array& operator += (const T (&values)[num_values]) noexcept {
+    Array& operator+=(const T (&values)[num_values]) noexcept {
         Copy(values, num_values);
         return *this;
     }
@@ -125,7 +125,7 @@ class Array {
      *        A reference to assigned array.     
      ********************************************************************************/
     template <size_t num_values>
-    Array& operator += (const Array<T, num_values>& source) noexcept {
+    Array& operator+=(const Array<T, num_values>& source) noexcept {
         Copy(source, num_values);
         return *this;
     }

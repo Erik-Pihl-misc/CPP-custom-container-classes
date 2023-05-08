@@ -76,74 +76,65 @@ class Vector {
     ~Vector(void) noexcept { Clear(); }
 
     /********************************************************************************
-     * @brief Returns reference to the element at specified index in referenced 
-     *        vector. An exception occurs if the index falls outside the vector.
+     * @brief Index operator, returns reference to the element at specified index 
+     *        in referenced vector. 
      *
      * @param index
      *        Index to searched element.
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    T& operator[] (const size_t index) noexcept {
+    T& operator[](const size_t index) noexcept {
         return data_[index];
     }
 
     /********************************************************************************
-     * @brief Returns reference to the element at specified index in referenced 
-     *        vector. An exception occurs if the index falls outside the vector.
+     * @brief Index operator, returns reference to the element at specified index 
+     *        in referenced vector. 
      *
      * @param index
      *        Index to searched element.
      * @return
      *        A reference to the element at specified index.
      ********************************************************************************/
-    const T& operator[] (const size_t index) const noexcept {
+    const T& operator[](const size_t index) const noexcept {
         return data_[index];
     }
 
     /********************************************************************************
-     * @brief Copies the content of referenced vector to assigned vector. 
-     *        Previous values are cleared before copying.
+     * @brief Assignment operator, copies the content of referenced vector to
+     *        assigned vector. Previous values are cleared before copying.
      *
      * @param values
-     *        Referenced values to copy.
-     * @return
-     *        A reference to assigned vector.     
+     *        Referenced values to copy.    
      ********************************************************************************/
     template <size_t size>
-    Vector& operator= (const T (&values)[size]) noexcept {
+    void operator=(const T (&values)[size]) noexcept {
         Clear();
         Copy(values);
-        return *this;
     }
 
     /********************************************************************************
-     * @brief Copies the content of referenced vector to assigned vector. 
-     *        Previous values are cleared before copying.
+     * @brief Assignment operator, copies the content of referenced vector to 
+     *        assigned vector. Previous values are cleared before copying.
      *
      * @param source
-     *        Reference to vector containing the the values to add.
-     * @return
-     *        A reference to assigned vector.     
+     *        Reference to vector containing the the values to add.    
      ********************************************************************************/
-    Vector& operator= (const Vector& source) noexcept {
+    void operator=(const Vector& source) noexcept {
         Clear();
         Copy(source);
-        return *this;
     }
 
     /********************************************************************************
-     * @brief Adds referenced values to the back of assigned vector.
+     * @brief Addition operator, pushes referenced values to the back of the vector.
      *
      * @param values
-     *        Reference to the values to add to assigned vector.
-     * @return
-     *        A reference to assigned vector.     
+     *        Reference to the values to add.
      ********************************************************************************/
     template <size_t size>
-    Vector& operator += (const T (&values)[size]) noexcept {
+    void operator+=(const T (&values)[size]) noexcept {
         AddValues(values);
-        return *this;
     }
 
     /********************************************************************************
@@ -151,12 +142,9 @@ class Vector {
      *
      * @param source
      *        Reference to vector containing the the values to add.
-     * @return
-     *        A reference to assigned vector.     
      ********************************************************************************/
-    Vector& operator += (const Vector& source) noexcept {
+    void operator+=(const Vector& source) noexcept {
         AddValues(source);
-        return *this;
     }
 
     /********************************************************************************
@@ -188,6 +176,16 @@ class Vector {
      ********************************************************************************/
     size_t Size(void) const noexcept {
         return size_;
+    }
+
+    /********************************************************************************
+     * @brief Checks if referenced vector is empty.
+     *
+     * @return
+     *        True if referenced vector is empty, else false.
+     ********************************************************************************/
+    bool Empty(void) const noexcept {
+        return size_ == 0 ? true : false;
     }
 
     /********************************************************************************
@@ -248,7 +246,7 @@ class Vector {
     }
 
     /********************************************************************************
-     * @brief Resize referenced vector to specified new size via reallocation
+     * @brief Resizes referenced vector to specified new size via reallocation
      *        of heap allocated memory block. The memory block is unchanged if
      *        the memory allocation fails.
      *
@@ -303,7 +301,7 @@ class Vector {
 
     /********************************************************************************
      * @brief Copies the content of referenced source. All previous elements are
-     *        removed or overwritten.
+     *        either removed or overwritten.
      *
      * @param source
      *        Reference to vector whose content is copied.
